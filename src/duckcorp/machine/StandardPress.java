@@ -1,6 +1,8 @@
 package duckcorp.machine;
 
 import duckcorp.duck.Duck;
+import duckcorp.duck.DuckType;
+import duckcorp.duck.StandardDuck;
 
 /**
  * Presse produisant des canards Standard.
@@ -11,9 +13,46 @@ import duckcorp.duck.Duck;
  *   - Implémentez produceDuck(), getPurchaseCost(), getName()
  * @author Roussille Philippe <roussille@3il.fr>
  */
-public class StandardPress {
+public class StandardPress extends Machine {
 
     public static final int PURCHASE_COST    = 500;
     public static final int CAPACITY         = 5;
     public static final int MAINTENANCE_COST = 50;
+
+    /**
+     * Crée une nouvelle presse standard.
+     */
+    public StandardPress() {
+        super(DuckType.STANDARD, CAPACITY, MAINTENANCE_COST);
+    }
+
+    /**
+     * Produit un canard standard avec une qualité calculée selon l'état de la machine.
+     *
+     * @return un nouveau StandardDuck
+     */
+    @Override
+    public Duck produceDuck() {
+        return new StandardDuck(computeQuality());
+    }
+
+    /**
+     * Retourne le coüt d'achat d'une presse standard.
+     *
+     * @return 500 euros
+     */
+    @Override
+    public int getPurchaseCost() {
+        return PURCHASE_COST;
+    }
+
+    /**
+     * Retourne le nom de cette machine.
+     *
+     * @return "Presse Standard"
+     */
+    @Override
+    public String getName() {
+        return "Presse Standard";
+    }
 }
