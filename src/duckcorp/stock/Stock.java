@@ -5,6 +5,7 @@ import duckcorp.duck.DuckType;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +121,16 @@ public class Stock<T extends Duck> {
      * Tous les types doivent apparaître dans la map (avec 0 si absent).
      */
     public Map<DuckType, Integer> countByType() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Stock.countByType()");
+        Map<DuckType, Integer> result = new HashMap<>();
+        for (DuckType type : DuckType.values()) {
+            result.put(type, 0);
+        }
+        
+        //Une seule passe pourcompter sans la methode count()
+        for (T duck : items) {
+            result.put(duck.getType(), result.get(duck.getType()) + 1);
+        }
+        
+        return result;
     }
 }
