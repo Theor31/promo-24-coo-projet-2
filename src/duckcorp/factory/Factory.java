@@ -1,5 +1,6 @@
 package duckcorp.factory;
 
+import duckcorp.bonus.DuckComparator;
 import duckcorp.duck.Duck;
 import duckcorp.machine.Machine;
 import duckcorp.order.Order;
@@ -77,8 +78,13 @@ public class Factory {
      * @return true si l'achat a réussi, false si budget insuffisant
      */
     public boolean buyMachine(Machine machine) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.buyMachine()");
+        int cost = machine.getPurchaseCost();
+        if (budget < cost) {
+            return false;
+        }
+        budget -= cost;
+        machines.add(machine);
+        return true;
     }
 
     /**
@@ -88,8 +94,13 @@ public class Factory {
      * @return true si la maintenance a réussi, false si budget insuffisant
      */
     public boolean maintainMachine(Machine machine) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.maintainMachine()");
+        int cost = machine.getMaintenanceCost();
+        if (budget < cost) {
+            return false;
+        }
+        budget -= cost;
+        machine.maintain();
+        return true;
     }
 
     /**
@@ -103,8 +114,16 @@ public class Factory {
      * @return la liste de tous les canards produits ce tour
      */
     public List<Duck> runProduction() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.runProduction()");
+        List<Duck> produced = new ArrayList<>();
+        for (Machine machine : machines) {
+            for (int i = 0; i < machine.getCapacity(); i++) {
+                Duck duck = machine.produceDuck();
+                stock.add(duck);
+                produced.add(duck);
+            }
+        }
+        stats.recordProduction(produced);
+        return produced;
     }
 
     /**
@@ -122,8 +141,32 @@ public class Factory {
      * @return true si la commande a été honorée, false sinon
      */
     public boolean fulfillOrder(Order order) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.fulfillOrder()");
+        if (!order.canBeFulfilled(stock)) {
+            return false;
+        }
+        
+        List<Duck> ducks = stock.remove(order.getDuckType(), order.getQuantity());
+        Collections.sort(ducks, new DuckComparator());
+        
+        budget += order.getTotalValue();
+        
+        double avgQuality = 0;
+        for (Duck duck : ducks) {
+            avgQuality += duck.getQualityScore();
+        }
+        avgQuality /= ducks.size();
+        
+        if (avgQuality >= 70) {
+            reputation += 3;
+        } else if (avgQuality >= 50) {
+            reputation += 1;
+        }
+        
+        order.fulfill();
+        
+        stats.recordSale(order);
+        
+        return true;
     }
 
     // --- TODO (Bonus 1) ---
@@ -134,7 +177,11 @@ public class Factory {
      * pénalise la réputation de 5 points.
      */
     public void endTurn() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Factory.endTurn()");
+        for (Machine machine : machines) {
+            machine.degrade();
+            if (machine.needsMaintenance()) {
+                reputation = Math.max(0, reputation - 5);
+            }
+        }
     }
 }
