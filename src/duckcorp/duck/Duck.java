@@ -47,7 +47,7 @@ public abstract class Duck implements Qualifiable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Duck)) return false;
         Duck duck = (Duck) o;
         return id.equals(duck.id);
     }
