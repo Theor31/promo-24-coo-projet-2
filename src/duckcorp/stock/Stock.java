@@ -87,8 +87,13 @@ public class Stock<T extends Duck> {
      * @param type le type à compter
      */
     public int count(DuckType type) {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Stock.count()");
+        int count = 0;
+        for (T duck : items) {
+            if (duck.getType() == type) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -98,8 +103,13 @@ public class Stock<T extends Duck> {
      * Conseil : appelez isDefective() plutôt que de comparer le score manuellement.
      */
     public int countDefective() {
-        // TODO
-        throw new UnsupportedOperationException("TODO : Stock.countDefective()");
+        int count = 0;
+        for (T duck : items) {
+            if (duck.isDefective()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /**
