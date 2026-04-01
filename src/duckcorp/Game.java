@@ -121,6 +121,14 @@ public class Game {
      *   1 -> StandardPress  /  2 -> MiniPress  /  3 -> LuxuryMold
      */
     private Machine createMachine(int choice) {
-        throw new UnsupportedOperationException("TODO : Game.createMachine()");
+        if (choice == 1) {
+            return new duckcorp.machine.StandardPress();
+        } else if (choice == 2) {
+            return new duckcorp.machine.MiniPress();
+        } else if (choice == 3) {
+            return new duckcorp.machine.LuxuryMold();
+        } else {
+            throw new IllegalArgumentException("Choix invalide : " + choice);
+        }
     }
 }
