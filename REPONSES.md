@@ -22,3 +22,7 @@ boolean ok1 = order.canBeFulfilled(standardStock);
 // Ne compile pas avec Stock<Duck>
 // order.canBeFulfilled(standardStock);  // Type mismatch
 ```
+
+## Q5
+
+Collections.unmodifiableList() protège la collection elle-même contre les ajouts/retraits directs qui contourneraient la logique métier, mais permet quand même de modifier les machines via leurs méthodes (comme degrade() ou maintain()), car l'encapsulation protège le conteneur, pas ses objets.
