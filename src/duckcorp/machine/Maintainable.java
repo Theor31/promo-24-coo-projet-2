@@ -20,7 +20,7 @@ public interface Maintainable {
      * TODO : implémentez cette méthode default.
      */
     default boolean needsMaintenance() {
-        throw new UnsupportedOperationException("TODO : Maintainable.needsMaintenance()");
+        return getCondition() < 30;
     }
 
     /**
@@ -29,6 +29,15 @@ public interface Maintainable {
      * TODO : implémentez cette méthode default.
      */
     default String getConditionLabel() {
-        throw new UnsupportedOperationException("TODO : Maintainable.getConditionLabel()");
+        int condition = getCondition();
+        if (condition >= 80) {
+            return "Parfait";
+        } else if (condition >= 50) {
+            return "Correct";
+        } else if (condition >= 30) {
+            return "Usé";
+        } else {
+            return "Critique";
+        }
     }
 }
